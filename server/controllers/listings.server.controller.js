@@ -46,24 +46,26 @@ exports.read = function(req, res) {
 
 /* Update a listing */
 exports.update = function(req, res) {
-  Listing.findOneAndUpdate({code: 'CEN3035'}, {
-    code: 'CEN3031',
-    name: 'Test Name',
-    address: 'Test Address'
-  }, function(err, listingsResult){
+  var listing = req.listing;
+
+  listing.code = req.body.code;
+  listing.name = req.body.name;
+  listing.address = req.body.address;
+  if (req.results){
+    listing.coordinates = {
+      latitude : req.results.lat,
+      longitude : req.results.lng
+    } ;
+ }
+  listing.save(function(err){
     if (err) throw err;
-    else {
-      res.json(listingsResult);
+    else{
+      res.json(listing);
     }
   });
   /* Replace the article's properties with the new properties found in req.body */
   /* save the coordinates (located in req.results if there is an address property) */
   /* Save the article */
-  Listing.find({code: 'CEN3031'}, function(err, listing){
-  if (err) throw err;
-  console.log("\nUPDATED LISTING:\n");
-  console.log(listing);
-});
   
 };
 

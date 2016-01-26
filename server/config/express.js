@@ -25,13 +25,14 @@ module.exports.init = function() {
     res.send(req.results);
   });
 
+  app.use('/api/listings', listingsRouter);
   /* serve static files */
   app.use(express.static('client'));
-
   /* use the listings router for requests to the api */
-  app.use('/api/listings', listingsRouter);
+  app.use('*', express.static('client'));
 
   /* go to homepage for all routes not specified */ 
+
 
   return app;
 };  
